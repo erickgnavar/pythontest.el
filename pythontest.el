@@ -32,6 +32,11 @@
   :type 'string
   :group 'python)
 
+(defun pythontest-change-test-runner ()
+  "Chang test runner."
+  (interactive)
+  (setq pythontest-test-runner (completing-read "Choose test runner: " '("unitest" "pytest"))))
+
 (defun pythontest-test-all ()
   "Run all the project test suite."
   (interactive)
