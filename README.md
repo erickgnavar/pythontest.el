@@ -2,6 +2,17 @@
 
 Execute python tests
 
+## Motivation
+
+I used to use `elpy` to set up a programming environment for python, I use `LSP` with `pyright` now so I only was using
+`elpy` to run tests. I wanted a simpler solution to run tests in 3 scenarios:
+
+- Run the whole test suite
+- Run a test file
+- Run a specific test at point
+
+So I make this package to have a simpler solution :)
+
 ## Installation
 
 ### Cloning the repo
