@@ -44,3 +44,10 @@ There are no default key binding, these functions can be used to run tests.
 | `pythontest-test-all`      | Run all the project tests          |
 | `pythontest-test-file`     | Run only the current file          |
 | `pythontest-test-at-point` | Run the function or class at point |
+
+## FAQ
+
+`How to pass flags when running pytest?`
+
+You can customize variable `pythontest-pytest-command`, by default it points to `pytest` but it can be modified for
+example to enable more verbosity with `(setq pythontest-pytest-command "pytest -vv")`.
