@@ -18,7 +18,8 @@
 
 (defcustom pythontest-test-runner "unittest"
   "Test runner to be executed."
-  :type 'string
+  :type '(choice (const :tag "Unittest" "unitest")
+                 (const :tag "Pytest" "pytest"))
   :group 'python)
 
 (defcustom pythontest-unittest-command "python3 -m unittest"
@@ -26,22 +27,44 @@
   :type 'string
   :group 'python)
 
+(defcustom pythontest-pytest-command "pytest"
+  "Command to be executed when running pytest."
+  :type 'string
+  :group 'python)
+
 (defun pythontest-test-all ()
   "Run all the project test suite."
   (interactive)
-  (pythontest--run-compile pythontest-unittest-command))
+  (cond ((string-equal pythontest-test-runner "unittest")
+         (pythontest--run-compile pythontest-unittest-command))
+        ((string-equal pythontest-test-runner "pytest")
+         (pythontest--run-compile pythontest-pytest-command))
+        (t (pythontest--not-valid-runner-print-message))))
 
 (defun pythontest-test-file ()
   "Run all file test suite."
   (interactive)
-  (let* ((command (concat pythontest-unittest-command " " (pythontest--unittest-get-file-path))))
+  (let* ((command (cond ((string-equal pythontest-test-runner "unittest")
+                         (concat pythontest-unittest-command " " (pythontest--unittest-get-file-path)))
+                        ((string-equal pythontest-test-runner "pytest")
+                         (concat pythontest-pytest-command " " (pythontest--pytest-get-file-path))))))
+    (unless command
+      (pythontest--not-valid-runner-print-message))
     (pythontest--run-compile command)))
 
 (defun pythontest-test-at-point ()
   "Run test at point."
   (interactive)
-  (let ((command (concat pythontest-unittest-command " " (pythontest--unittest-get-file-path) "." (pythontest--get-test-at-point))))
+  (let ((command (cond ((string-equal pythontest-test-runner "unittest")
+                        (concat pythontest-unittest-command " " (pythontest--unittest-get-file-path) "." (pythontest--get-test-at-point ".")))
+                       ((string-equal pythontest-test-runner "pytest")
+                        (concat pythontest-pytest-command " " (pythontest--pytest-get-file-path) "::" (pythontest--get-test-at-point "::")))
+                       (t (pythontest--not-valid-runner-print-message)))))
     (pythontest--run-compile command)))
+
+(defun pythontest--not-valid-runner-print-message ()
+  "Print `user-error' message it the configured runner is not valid."
+  (user-error "Not valid value for `pythontest-test-runner': %s" pythontest-test-runner))
 
 (defun pythontest--project-root ()
   "Return project root using project.el."
@@ -53,14 +76,18 @@
          (path-no-extension (string-replace ".py" "" relative-path)))
     (string-replace "/" "." path-no-extension)))
 
+(defun pythontest--pytest-get-file-path ()
+  "Return relative filepath as valid pytest format."
+  (string-replace (pythontest--project-root) "" (buffer-file-name)))
+
 (defun pythontest--run-compile (command)
   "Run compile COMMAND."
   (let ((default-directory (pythontest--project-root))
         (compile-command command))
     (compile compile-command)))
 
-(defun pythontest--get-test-at-point ()
-  "Compute test path at point using treesitter.
+(defun pythontest--get-test-at-point (separator)
+  "Compute test path at point and return expression using SEPARATOR.
 It can be the path of a function or a class.
 It will depends on the position of the cursos when this function is called."
   (unless (featurep 'treesit)
@@ -74,7 +101,7 @@ It will depends on the position of the cursos when this function is called."
          (function-node (treesit-parent-until node (lambda (n)
                                                      (string-equal (treesit-node-type n) "function_definition")))))
     (cond ((and class-node function-node)
-           (format "%s.%s" (treesit-node-text (treesit-node-child class-node 1)) (treesit-node-text (treesit-node-child function-node 1))))
+           (concat (treesit-node-text (treesit-node-child class-node 1)) separator (treesit-node-text (treesit-node-child function-node 1))))
 
           ((and class-node (not function-node))
            (treesit-node-text (treesit-node-child class-node 1)))
