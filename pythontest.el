@@ -18,7 +18,7 @@
 
 (defcustom pythontest-test-runner "unittest"
   "Test runner to be executed."
-  :type '(choice (const :tag "Unittest" "unitest")
+  :type '(choice (const :tag "Unittest" "unittest")
                  (const :tag "Pytest" "pytest"))
   :group 'python)
 
@@ -36,7 +36,7 @@
 (defun pythontest-change-test-runner ()
   "Chang test runner."
   (interactive)
-  (setq pythontest-test-runner (completing-read "Choose test runner: " '("unitest" "pytest"))))
+  (setq pythontest-test-runner (completing-read "Choose test runner: " '("unittest" "pytest"))))
 
 ;;;###autoload
 (defun pythontest-test-all ()
