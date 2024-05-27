@@ -32,11 +32,13 @@
   :type 'string
   :group 'python)
 
+;;;###autoload
 (defun pythontest-change-test-runner ()
   "Chang test runner."
   (interactive)
   (setq pythontest-test-runner (completing-read "Choose test runner: " '("unitest" "pytest"))))
 
+;;;###autoload
 (defun pythontest-test-all ()
   "Run all the project test suite."
   (interactive)
@@ -46,6 +48,7 @@
          (pythontest--run-compile pythontest-pytest-command))
         (t (pythontest--not-valid-runner-print-message))))
 
+;;;###autoload
 (defun pythontest-test-file ()
   "Run all file test suite."
   (interactive)
@@ -57,6 +60,7 @@
       (pythontest--not-valid-runner-print-message))
     (pythontest--run-compile command)))
 
+;;;###autoload
 (defun pythontest-test-at-point ()
   "Run test at point."
   (interactive)
