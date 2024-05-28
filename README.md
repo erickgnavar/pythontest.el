@@ -51,3 +51,12 @@ There are no default key binding, these functions can be used to run tests.
 
 You can customize variable `pythontest-pytest-command`, by default it points to `pytest` but it can be modified for
 example to enable more verbosity with `(setq pythontest-pytest-command "pytest -vv")`.
+
+`How can configure different runner per project?`
+
+You can use a `.dir-locals.el` file to customize the variable `pythontest-test-runner` per project, for example to use
+`unittest`:
+
+```emacs-lisp
+((python-ts-mode . ((pythontest-test-runner . "unittest"))))
+```
