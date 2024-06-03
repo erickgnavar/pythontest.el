@@ -19,7 +19,8 @@
 (defcustom pythontest-test-runner "unittest"
   "Test runner to be executed."
   :type '(choice (const :tag "Unittest" "unittest")
-                 (const :tag "Pytest" "pytest"))
+                 (const :tag "Pytest" "pytest")
+                 (const :tag "Django" "django"))
   :group 'python)
 
 (defcustom pythontest-unittest-command "python3 -m unittest"
@@ -32,11 +33,16 @@
   :type 'string
   :group 'python)
 
+(defcustom pythontest-django-command "python3 manage.py test"
+  "Command to be executed when running tests with Djando."
+  :type 'string
+  :group 'python)
+
 ;;;###autoload
 (defun pythontest-change-test-runner ()
   "Chang test runner."
   (interactive)
-  (setq pythontest-test-runner (completing-read "Choose test runner: " '("unittest" "pytest"))))
+  (setq pythontest-test-runner (completing-read "Choose test runner: " '("unittest" "pytest" "django"))))
 
 ;;;###autoload
 (defun pythontest-test-all ()
@@ -46,6 +52,8 @@
          (pythontest--run-compile pythontest-unittest-command))
         ((string-equal pythontest-test-runner "pytest")
          (pythontest--run-compile pythontest-pytest-command))
+        ((string-equal pythontest-test-runner "django")
+         (pythontest--run-compile pythontest-django-command))
         (t (pythontest--not-valid-runner-print-message))))
 
 ;;;###autoload
@@ -55,7 +63,9 @@
   (let* ((command (cond ((string-equal pythontest-test-runner "unittest")
                          (concat pythontest-unittest-command " " (pythontest--unittest-get-file-path)))
                         ((string-equal pythontest-test-runner "pytest")
-                         (concat pythontest-pytest-command " " (pythontest--pytest-get-file-path))))))
+                         (concat pythontest-pytest-command " " (pythontest--pytest-get-file-path)))
+                        ((string-equal pythontest-test-runner "django")
+                         (concat pythontest-django-command " " (pythontest--unittest-get-file-path))))))
     (unless command
       (pythontest--not-valid-runner-print-message))
     (pythontest--run-compile command)))
@@ -68,6 +78,8 @@
                         (concat pythontest-unittest-command " " (pythontest--unittest-get-file-path) "." (pythontest--get-test-at-point ".")))
                        ((string-equal pythontest-test-runner "pytest")
                         (concat pythontest-pytest-command " " (pythontest--pytest-get-file-path) "::" (pythontest--get-test-at-point "::")))
+                       ((string-equal pythontest-test-runner "django")
+                        (concat pythontest-django-command " " (pythontest--unittest-get-file-path) "." (pythontest--get-test-at-point ".")))
                        (t (pythontest--not-valid-runner-print-message)))))
     (pythontest--run-compile command)))
 
