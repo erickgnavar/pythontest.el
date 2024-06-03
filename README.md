@@ -35,6 +35,14 @@ Clone this repo somewhere, and add this to your config:
              :repo "erickgnavar/pythontest.el"))
 ```
 
+## Supported test libraries
+
+This can be configured using variable `pythontest-test-runner`.
+
+- `unittest`
+- `pytest`
+- `django`
+
 ## Usage
 
 There are no default key binding, these functions can be used to run tests.
