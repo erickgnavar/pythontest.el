@@ -4,7 +4,7 @@
 ;; Author: Erick Navarro <erick@navarro.io>
 ;; URL: https://github.com/erickgnavar/pythontest.el
 ;; Version: 0.1.0
-;; SPDX-License-Identifier: GNU General Public License v3.0 or later
+;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Package-Requires: ((emacs "29.1"))
 
 ;;; Commentary:
