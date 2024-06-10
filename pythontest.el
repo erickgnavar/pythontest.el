@@ -111,8 +111,6 @@
   "Compute test path at point and return expression using SEPARATOR.
 It can be the path of a function or a class.
 It will depends on the position of the cursos when this function is called."
-  (unless (featurep 'treesit)
-    (user-error "Treesit support is required"))
   (unless (treesit-language-available-p 'python)
     (user-error "Python grammar is required to use this function"))
   (let* ((lang (treesit-language-at (point)))
