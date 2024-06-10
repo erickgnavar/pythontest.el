@@ -21,6 +21,7 @@
   :type '(choice (const :tag "Unittest" "unittest")
                  (const :tag "Pytest" "pytest")
                  (const :tag "Django" "django"))
+  :local t
   :group 'python)
 
 (defcustom pythontest-unittest-command "python3 -m unittest"
