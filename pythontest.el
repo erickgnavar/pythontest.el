@@ -42,7 +42,7 @@
 (defun pythontest-change-test-runner ()
   "Chang test runner."
   (interactive)
-  (setq pythontest-test-runner (completing-read "Choose test runner: " '("unittest" "pytest" "django"))))
+  (setq pythontest-test-runner (completing-read "Choose test runner: " '("unittest" "pytest" "django") nil t)))
 
 ;;;###autoload
 (defun pythontest-test-all ()
