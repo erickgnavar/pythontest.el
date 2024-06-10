@@ -105,7 +105,7 @@
   "Run compile COMMAND."
   (let ((default-directory (pythontest--project-root))
         (compile-command command))
-    (compile compile-command)))
+    (compile (shell-quote-argument compile-command))))
 
 (defun pythontest--get-test-at-point (separator)
   "Compute test path at point and return expression using SEPARATOR.
