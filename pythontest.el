@@ -96,17 +96,17 @@
   "Return relative filepath as valid unittest format."
   (let* ((relative-path (string-replace (pythontest--project-root) "" (buffer-file-name)))
          (path-no-extension (string-replace ".py" "" relative-path)))
-    (string-replace "/" "." path-no-extension)))
+    (string-replace "/" "." (shell-quote-argument path-no-extension))))
 
 (defun pythontest--pytest-get-file-path ()
   "Return relative filepath as valid pytest format."
-  (string-replace (pythontest--project-root) "" (buffer-file-name)))
+  (string-replace (pythontest--project-root) "" (shell-quote-argument buffer-file-name)))
 
 (defun pythontest--run-compile (command)
   "Run compile COMMAND."
   (let ((default-directory (pythontest--project-root))
         (compile-command command))
-    (compile (shell-quote-argument compile-command))))
+    (compile compile-command)))
 
 (defun pythontest--get-test-at-point (separator)
   "Compute test path at point and return expression using SEPARATOR.
