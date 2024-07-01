@@ -1,5 +1,7 @@
 # pythontest.el
 
+[![MELPA](https://melpa.org/packages/pythontest-badge.svg)](https://melpa.org/#/pythontest)
+
 Execute python tests
 
 ## Motivation
@@ -23,6 +25,13 @@ Clone this repo somewhere, and add this to your config:
 (add-to-list 'load-path "path where the repo was cloned")
 
 (require 'pythontest)
+```
+
+### Using use-package
+
+```emacs-lisp
+(use-package pythontest
+  :ensure t)
 ```
 
 ### Using straight.el
