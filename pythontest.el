@@ -24,6 +24,8 @@
   :local t
   :group 'python)
 
+;;;###autoload (put 'pythontest-test-runner 'safe-local-variable 'stringp)
+
 (defcustom pythontest-unittest-command "python3 -m unittest"
   "Command to be executed when running unittest."
   :type 'string
